@@ -2,7 +2,7 @@
   "name": "cozy-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_PATH=./dist node ./dist/index.js",
@@ -12,12 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^22.10.5",
     "express": "^4.21.2",
-    "rimraf": "^6.0.1"
+    "rimraf": "^4.0.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
-    "@types/node": "^17.0.45",
     "typescript": "^5.1.6"
   }
 }
