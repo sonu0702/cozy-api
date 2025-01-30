@@ -11,6 +11,7 @@
         "outDir": "./dist",
         "rootDir": "./src",
         "strict": false,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "experimentalDecorators":true
     }
 }
