@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 import Handlebars from 'handlebars';
 import html_to_pdf from 'html-pdf-node';
 import { InvoiceService } from './invoice.service';
@@ -11,9 +9,9 @@ export class PdfService {
 
     constructor() {
         this.invoiceService = new InvoiceService();
-        const templatePath = path.join(__dirname, '../templates/invoice.html');
-        const templateContent = fs.readFileSync(templatePath, 'utf-8');
-        this.template = Handlebars.compile(templateContent);
+        const { invoiceTemplate } = require('../templates/invoiceTemplate');
+        // Initialize Handlebars template
+        this.template = Handlebars.compile(invoiceTemplate.toString());
     }
 
     async generateInvoicePdf(invoiceId: string, userId: string): Promise<Buffer> {
@@ -43,7 +41,7 @@ export class PdfService {
                 totalInWords: this.numberToWords(Number(invoice.total))
             };
 
-            // Generate HTML
+            // Generate HTML from template with data
             const html = this.template(templateData);
 
             // Convert to PDF

@@ -456,3 +456,16 @@
 2025-02-02 22:36:47:3647 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
 2025-02-02 22:36:49:3649 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
 2025-02-02 22:39:09:399 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-02 22:49:12:4912 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-02 22:49:12:4912 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-02 22:49:15:4915 [31merror[39m: [31mAuthentication error: jwt expired[39m
+2025-02-02 22:49:19:4919 [31merror[39m: [31mAuthentication error: jwt expired[39m
+2025-02-02 22:49:23:4923 [32minfo[39m: [32mUser logged in successfully: sonu[39m
+2025-02-02 22:49:43:4943 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-02 22:50:08:508 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-02 22:51:20:5120 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-02 22:51:20:5120 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-02 22:51:39:5139 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-02 22:51:39:5139 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-02 22:54:48:5448 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-02 22:54:56:5456 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
