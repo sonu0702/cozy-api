@@ -4,6 +4,7 @@ import { logger } from '../utils/logger';
 import { getRepository } from 'typeorm';
 import { AppDataSource } from '../config/database';
 import { User } from '../entities/User';
+import { createErrorResponse, ApiError } from '../interfaces/ApiResponse';
 
 export interface AuthRequest extends Request {
     user?: User;
@@ -14,12 +15,12 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {
-            return res.status(401).json({ message: 'No authorization header' });
+            throw new ApiError('No authorization header', 'AUTHENTICATION_ERROR');
         }
 
         const token = authHeader.split(' ')[1];
         if (!token) {
-            return res.status(401).json({ message: 'No token provided' });
+            throw new ApiError('No token provided', 'AUTHENTICATION_ERROR');
         }
 
         const decoded = verify(token, process.env.JWT_SECRET) as { id: string };
@@ -29,6 +30,7 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
         next();
     } catch (error) {
         logger.error('Authentication error:', error);
-        return res.status(401).json({ message: 'Invalid token' });
+        const apiError = error instanceof ApiError ? error : new ApiError('Invalid token', 'AUTHENTICATION_ERROR');
+        return res.status(401).json(createErrorResponse(apiError));
     }
 };

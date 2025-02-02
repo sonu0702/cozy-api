@@ -18,18 +18,21 @@ export class Shop {
     @Column({ nullable: true })
     pan: string;
 
-    @Column()
+    @Column({ nullable: true})
     @MinLength(5)
     address: string;
 
     @Column({ nullable: true })
     cin: string;
 
-    @Column()
+    @Column({ nullable: true})
     @MinLength(2)
     state: string;
 
-    @Column()
+    @Column({ nullable: true})
+    state_code: string;
+
+    @Column({ nullable: true})
     @MinLength(6)
     pin: string;
 

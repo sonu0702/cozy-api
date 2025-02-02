@@ -6,6 +6,7 @@ import { AppDataSource } from '../config/database';
 import { logger } from '../utils/logger';
 import { ApiError } from '../interfaces/ApiResponse';
 import { withTransaction } from '../utils/transaction';
+import { InvoiceItem } from '../entities/InvoiceItem';
 
 export class InvoiceService {
     private invoiceRepository: Repository<Invoice>;
@@ -14,7 +15,7 @@ export class InvoiceService {
         this.invoiceRepository = AppDataSource.getRepository(Invoice);
     }
 
-    async createInvoice(invoiceData: Partial<Invoice>, user: User, shopId: string): Promise<Invoice> {
+    async createInvoice(invoiceData: Partial<Invoice>, items: Partial<InvoiceItem>[], user: User, shopId: string): Promise<Invoice> {
         return withTransaction(async (queryRunner) => {
             const shop = await queryRunner.manager.findOne(Shop, { where: { id: shopId, owned_by: { id: user.id } } });
             if (!shop) {
@@ -28,20 +29,36 @@ export class InvoiceService {
             });
 
             await queryRunner.manager.save(invoice);
+
+            if (items && items.length > 0) {
+                const invoiceItems = items.map(item => {
+                    return queryRunner.manager.create(InvoiceItem, {
+                        ...item,
+                        invoice: invoice
+                    });
+                });
+                await queryRunner.manager.save(invoiceItems);
+                invoice.items = invoiceItems;
+            }
+
             logger.info(`Invoice created successfully for shop: ${shop.name}`);
             return invoice;
         }, 'Error in invoice creation');
     }
 
-    async getInvoicesByShop(shopId: string, userId: string): Promise<Invoice[]> {
+    async getInvoicesByShop(shopId: string, userId: string, page: number = 1, limit: number = 10): Promise<{ invoices: Invoice[], total: number }> {
         try {
-            return await this.invoiceRepository.find({
+            const skip = (page - 1) * limit;
+            const [invoices, total] = await this.invoiceRepository.findAndCount({
                 where: { 
                     shop: { id: shopId }
                 },
                 relations: ['items', 'shop', 'created_by'],
-                order: { created_at: 'DESC' }
+                order: { created_at: 'DESC' },
+                take: limit,
+                skip: skip
             });
+            return { invoices, total };
         } catch (error) {
             logger.error('Error fetching invoices:', error);
             throw new ApiError('Failed to fetch invoices', 'INVOICE_FETCH_ERROR');
@@ -84,5 +101,49 @@ export class InvoiceService {
             const invoice = await this.getInvoiceById(id, userId);
             await queryRunner.manager.remove(invoice);
         }, 'Error deleting invoice');
+    }
+
+    async addInvoiceItem(invoiceId: string, itemData: Partial<InvoiceItem>, userId: string): Promise<InvoiceItem> {
+        return withTransaction(async (queryRunner) => {
+            const invoice = await this.getInvoiceById(invoiceId, userId);
+            const item = queryRunner.manager.create(InvoiceItem, {
+                ...itemData,
+                invoice: invoice
+            });
+            await queryRunner.manager.save(item);
+            return item;
+        }, 'Error adding invoice item');
+    }
+
+    async updateInvoiceItem(id: string, itemData: Partial<InvoiceItem>, userId: string): Promise<InvoiceItem> {
+        return withTransaction(async (queryRunner) => {
+            const item = await queryRunner.manager.findOne(InvoiceItem, {
+                where: { id, invoice: { shop: { owned_by: { id: userId } } } },
+                relations: ['invoice', 'invoice.shop', 'invoice.shop.owned_by']
+            });
+
+            if (!item) {
+                throw new ApiError('Invoice item not found', 'INVOICE_ITEM_NOT_FOUND');
+            }
+
+            Object.assign(item, itemData);
+            await queryRunner.manager.save(item);
+            return item;
+        }, 'Error updating invoice item');
+    }
+
+    async deleteInvoiceItem(id: string, userId: string): Promise<void> {
+        return withTransaction(async (queryRunner) => {
+            const item = await queryRunner.manager.findOne(InvoiceItem, {
+                where: { id, invoice: { shop: { owned_by: { id: userId } } } },
+                relations: ['invoice', 'invoice.shop', 'invoice.shop.owned_by']
+            });
+
+            if (!item) {
+                throw new ApiError('Invoice item not found', 'INVOICE_ITEM_NOT_FOUND');
+            }
+
+            await queryRunner.manager.remove(item);
+        }, 'Error deleting invoice item');
     }
 }

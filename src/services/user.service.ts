@@ -4,6 +4,7 @@ import { User } from '../entities/User';
 import { AppDataSource } from '../config/database';
 import { logger } from '../utils/logger';
 import { ShopService } from './shop.service';
+import { Shop } from '../entities/Shop';
 
 export class UserService {
     private userRepository: Repository<User>;
@@ -13,38 +14,40 @@ export class UserService {
     }
 
     async register(email: string, username: string, password: string): Promise<User> {
-        const queryRunner = AppDataSource.createQueryRunner();
-        await queryRunner.connect();
-        await queryRunner.startTransaction();
-
         try {
+            // Create user first
             const user = this.userRepository.create({
                 email,
                 username,
                 password
             });
 
-            await queryRunner.manager.save(user);
-            
-            // Create default shop for new user using transaction
-            const shopService = new ShopService();
-            await shopService.createDefaultShop(user);
-            
-            await queryRunner.commitTransaction();
-            logger.info(`User registered successfully: ${username}`);
+            await this.userRepository.save(user);
+            logger.info(`User created successfully: ${username}`);
+
+            // Create default shop after user creation
+            try {
+                const shopService = new ShopService();
+                await shopService.createDefaultShop(user);
+                logger.info(`Default shop created for user: ${username}`);
+            } catch (shopError) {
+                logger.error(`Error creating default shop for user ${username}:`, shopError);
+                // We don't throw here as user creation was successful
+            }
+
             return user;
         } catch (error) {
-            await queryRunner.rollbackTransaction();
             logger.error('Error in user registration:', error);
             throw error;
-        } finally {
-            await queryRunner.release();
         }
     }
 
-    async login(username: string, password: string): Promise<{ user: User; token: string }> {
+    async login(username: string, password: string): Promise<{ user: User; token: string; default_shop: Shop | null }> {
         try {
-            const user = await this.userRepository.findOne({ where: { username } });
+            const user = await this.userRepository.findOne({
+                where: { username },
+                relations: ['shops']
+            });
 
             if (!user) {
                 logger.warn(`Login attempt failed: User ${username} not found`);
@@ -61,8 +64,15 @@ export class UserService {
                expiresIn: '1h'
             });
 
+            // Find default shop
+            const shopRepository = AppDataSource.getRepository(Shop);
+            const defaultShop = await shopRepository.findOne({
+                where: { owned_by: { id: user.id }, is_default: true },
+                relations: ['owned_by']
+            });
+
             logger.info(`User logged in successfully: ${username}`);
-            return { user, token };
+            return { user, token, default_shop: defaultShop }
         } catch (error) {
             logger.error('Error in user login:', error);
             throw error;

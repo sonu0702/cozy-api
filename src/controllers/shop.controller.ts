@@ -14,7 +14,17 @@ export class ShopController {
         try {
             const shopData = req.body;
             const shop = await this.shopService.createShop(shopData, req.user);
-            res.status(201).json(createSuccessResponse(shop, 'Shop created successfully'));
+            const resData = {
+                id: shop.id,
+                name: shop.name,
+                is_default: shop.is_default,
+                owned_by: {
+                    id: shop.owned_by.id,
+                    email: shop.owned_by.email,
+                    username: shop.owned_by.username
+                }
+            };
+            res.status(201).json(createSuccessResponse(resData, 'Shop created successfully'));
         } catch (error) {
             const apiError = error instanceof ApiError ? error : new ApiError('Failed to create shop');
             res.status(400).json(createErrorResponse(apiError));
@@ -24,7 +34,17 @@ export class ShopController {
     getShops = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             const shops = await this.shopService.getShopsByUser(req.user.id);
-            res.json(createSuccessResponse(shops, 'Shops retrieved successfully'));
+            const shopsData = shops.map(shop => ({
+                id: shop.id,
+                name: shop.name,
+                is_default: shop.is_default,
+                owned_by: {
+                    id: shop.owned_by.id,
+                    email: shop.owned_by.email,
+                    username: shop.owned_by.username
+                }
+            }));
+            res.json(createSuccessResponse(shopsData, 'Shops retrieved successfully'));
         } catch (error) {
             const apiError = error instanceof ApiError ? error : new ApiError('Failed to fetch shops');
             res.status(400).json(createErrorResponse(apiError));
@@ -34,7 +54,15 @@ export class ShopController {
     getShop = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             const shop = await this.shopService.getShopById(req.params.id);
-            res.json(createSuccessResponse(shop, 'Shop retrieved successfully'));
+            const shopData = {
+                ...shop,
+                owned_by: {
+                    id: shop.owned_by.id,
+                    email: shop.owned_by.email,
+                    username: shop.owned_by.username
+                }
+            }
+            res.json(createSuccessResponse(shopData, 'Shop retrieved successfully'));
         } catch (error) {
             const apiError = error instanceof ApiError ? error : new ApiError('Failed to fetch shop');
             res.status(error instanceof ApiError && error.code === 'SHOP_NOT_FOUND' ? 404 : 400)
@@ -45,7 +73,17 @@ export class ShopController {
     updateShop = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             const shop = await this.shopService.updateShop(req.params.id, req.body);
-            res.json(createSuccessResponse(shop, 'Shop updated successfully'));
+            const shopData = {
+                id: shop.id,
+                name: shop.name,
+                is_default: shop.is_default,
+                owned_by: {
+                    id: shop.owned_by.id,
+                    email: shop.owned_by.email,
+                    username: shop.owned_by.username
+                }
+            };
+            res.json(createSuccessResponse(shopData, 'Shop updated successfully'));
         } catch (error) {
             const apiError = error instanceof ApiError ? error : new ApiError('Failed to update shop');
             res.status(error instanceof ApiError && error.code === 'SHOP_NOT_FOUND' ? 404 : 400)
@@ -67,7 +105,17 @@ export class ShopController {
     setDefaultShop = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             const shop = await this.shopService.setDefaultShop(req.params.id, req.user.id);
-            res.json(createSuccessResponse(shop, 'Shop set as default successfully'));
+            const shopData = {
+                id: shop.id,
+                name: shop.name,
+                is_default: shop.is_default,
+                owned_by: {
+                    id: shop.owned_by.id,
+                    email: shop.owned_by.email,
+                    username: shop.owned_by.username
+                }
+            };
+            res.json(createSuccessResponse(shopData, 'Shop set as default successfully'));
         } catch (error) {
             const apiError = error instanceof ApiError ? error : new ApiError('Failed to set default shop');
             res.status(error instanceof ApiError && error.code === 'SHOP_NOT_FOUND' ? 404 : 400)

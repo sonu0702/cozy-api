@@ -95,18 +95,22 @@ export class ShopService {
     }
 
     async createDefaultShop(user: User): Promise<Shop> {
-        return withTransaction(async (queryRunner) => {
+        try {
             const defaultShop = this.shopRepository.create({
                 name: `${user.username}'s Shop`,
                 address: 'Default Address',
                 state: 'Default State',
                 pin: '000000',
-                owned_by: user
+                owned_by: user,
+                is_default: true
             });
 
-            await queryRunner.manager.save(defaultShop);
+            await this.shopRepository.save(defaultShop);
             logger.info(`Default shop created for user: ${user.username}`);
             return defaultShop;
-        }, 'Error creating default shop');
+        } catch (error) {
+            logger.error('Error creating default shop:', error);
+            throw new ApiError('Failed to create default shop', 'SHOP_CREATE_ERROR');
+        }
     }
 }

@@ -12,6 +12,7 @@
         "rootDir": "./src",
         "strict": false,
         "esModuleInterop": true,
-        "experimentalDecorators":true
+        "experimentalDecorators":true,
+        "emitDecoratorMetadata": true
     }
 }

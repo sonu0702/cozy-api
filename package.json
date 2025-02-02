@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_PATH=./dist node ./dist/index.js",
+    "dev": "debug=* NODE_PATH=./src ts-node-dev ./src/index.ts",
     "build": "rimraf dist && tsc"
   },
   "keywords": [],
@@ -13,16 +14,22 @@
   "license": "ISC",
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^22.10.5",
     "@types/pg": "^8.11.11",
     "bcrypt": "^5.1.1",
     "class-validator": "^0.14.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "handlebars": "^4.7.8",
+    "html-pdf-node": "^1.0.8",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "rimraf": "^4.0.1",
+    "roboto-font": "^0.1.0",
+    "ts-node-dev": "^2.0.0",
     "typeorm": "^0.3.20",
     "winston": "^3.17.0"
   },
