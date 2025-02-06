@@ -9,6 +9,7 @@ import { logger } from './utils/logger';
 import { createErrorResponse, ApiError } from './interfaces/ApiResponse';
 import { ShopController } from './controllers/shop.controller';
 import { InvoiceController } from './controllers/invoice.controller';
+import { ProductController } from './controllers/product.controller';
 
 config();
 
@@ -28,6 +29,7 @@ app.use(express.json());
 const userController = new UserController();
 const shopController = new ShopController();
 const invoiceController = new InvoiceController();
+const productController = new ProductController();
 
 // Routes
 app.post('/auth/register', userController.register);
@@ -49,11 +51,22 @@ app.get('/invoices/:id', authMiddleware, invoiceController.getInvoice);
 app.put('/invoices/:id', authMiddleware, invoiceController.updateInvoice);
 app.delete('/invoices/:id', authMiddleware, invoiceController.deleteInvoice);
 app.get('/invoices/:id/pdf', authMiddleware, invoiceController.generatePdf);
+app.get('/invoices/search/bill-to/:shop_id', authMiddleware, invoiceController.searchBillTo);
+app.get('/invoices/search/ship-to/:shop_id', authMiddleware, invoiceController.searchShipTo);
 
 // Invoice item routes
 app.post('/invoices/:invoiceId/items', authMiddleware, invoiceController.addInvoiceItem);
 app.put('/invoice-items/:id', authMiddleware, invoiceController.updateInvoiceItem);
 app.delete('/invoice-items/:id', authMiddleware, invoiceController.deleteInvoiceItem);
+
+// Product routes
+app.post('/shops/:shopId/products/bulk', authMiddleware, productController.bulkCreateProducts);
+app.post('/shops/:shopId/products', authMiddleware, productController.createProduct);
+app.get('/shops/:shopId/products', authMiddleware, productController.getProducts);
+app.get('/products/:id', authMiddleware, productController.getProduct);
+app.put('/products/:id', authMiddleware, productController.updateProduct);
+app.delete('/products/:id', authMiddleware, productController.deleteProduct);
+app.get('/shops/:shopId/products/search', authMiddleware, productController.searchProducts);
 
 // Initialize database connection
 AppDataSource.initialize()

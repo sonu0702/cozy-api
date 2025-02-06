@@ -146,4 +146,36 @@ export class InvoiceService {
             await queryRunner.manager.remove(item);
         }, 'Error deleting invoice item');
     }
+
+    async searchBillTo(name: string, shop_id: string): Promise<{ name: string; address: string; state: string; stateCode: string; gstin: string; }[]> {
+        try {
+            const result = await this.invoiceRepository
+                .createQueryBuilder('invoice')
+                .select(`DISTINCT invoice."billTo"`)
+                .where('invoice.shop.id = :shop_id', { shop_id })
+                .andWhere(`LOWER(invoice."billTo"::jsonb->>\'name\') LIKE :name`, { name: `%${name.toLowerCase()}%` })
+                .getRawMany();
+
+            return result.map(row => row.billTo);
+        } catch (error) {
+            logger.error('Error searching billTo:', error);
+            throw new ApiError('Failed to search billTo', 'SEARCH_ERROR');
+        }
+    }
+
+    async searchShipTo(name: string, shop_id: string): Promise<{ name: string; address: string; state: string; stateCode: string; gstin: string; }[]> {
+        try {
+            const result = await this.invoiceRepository
+                .createQueryBuilder('invoice')
+                .select(`DISTINCT invoice."shipTo"`)
+                .where('invoice.shop.id = :shop_id', { shop_id })
+                .andWhere(`LOWER(invoice."shipTo"::jsonb->>\'name\') LIKE :name`, { name: `%${name.toLowerCase()}%` })
+                .getRawMany();
+
+            return result.map(row => row.shipTo);
+        } catch (error) {
+            logger.error('Error searching shipTo:', error);
+            throw new ApiError('Failed to search shipTo', 'SEARCH_ERROR');
+        }
+    }
 }

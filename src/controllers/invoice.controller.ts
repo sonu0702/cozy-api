@@ -103,6 +103,36 @@ export class InvoiceController {
         }
     };
 
+    searchBillTo = async (req: AuthRequest, res: Response): Promise<void> => {
+        try {
+            const { name } = req.query;
+            const {shop_id} = req.params;
+            if (!name || typeof name !== 'string') {
+                throw new ApiError('Name parameter is required', 'INVALID_PARAMETER');
+            }
+            const billToResults = await this.invoiceService.searchBillTo(name, shop_id);
+            res.json(createSuccessResponse(billToResults, 'BillTo search completed successfully'));
+        } catch (error) {
+            const apiError = error instanceof ApiError ? error : new ApiError('Failed to search billTo');
+            res.status(400).json(createErrorResponse(apiError));
+        }
+    };
+
+    searchShipTo = async (req: AuthRequest, res: Response): Promise<void> => {
+        try {
+            const { name } = req.query;
+            const {shop_id} = req.params;
+            if (!name || typeof name !== 'string') {
+                throw new ApiError('Name parameter is required', 'INVALID_PARAMETER');
+            }
+            const shipToResults = await this.invoiceService.searchShipTo(name, shop_id);
+            res.json(createSuccessResponse(shipToResults, 'ShipTo search completed successfully'));
+        } catch (error) {
+            const apiError = error instanceof ApiError ? error : new ApiError('Failed to search shipTo');
+            res.status(400).json(createErrorResponse(apiError));
+        }            
+    };
+
     deleteInvoice = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             await this.invoiceService.deleteInvoice(req.params.id, req.user.id);

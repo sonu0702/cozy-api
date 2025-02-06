@@ -95,3 +95,11 @@
 2025-02-02 22:28:38:2838 [31merror[39m: [31mError fetching invoice: invalid input syntax for type uuid: "[object Object]"[39m
 2025-02-02 22:49:15:4915 [31merror[39m: [31mAuthentication error: jwt expired[39m
 2025-02-02 22:49:19:4919 [31merror[39m: [31mAuthentication error: jwt expired[39m
+2025-02-06 08:10:45:1045 [31merror[39m: [31mError searching billTo: cross-database references are not implemented: invoice.shop.owned_by.id[39m
+2025-02-06 08:15:55:1555 [31merror[39m: [31mError searching billTo: column invoice.billto does not exist[39m
+2025-02-06 08:17:42:1742 [31merror[39m: [31mError searching billTo: column invoice.billto does not exist[39m
+2025-02-06 08:17:43:1743 [31merror[39m: [31mError searching billTo: column invoice.billto does not exist[39m
+2025-02-06 09:44:50:4450 [31merror[39m: [31mAuthentication error: No authorization header[39m
+2025-02-06 09:52:59:5259 [31merror[39m: [31mError searching products: column product.shopid does not exist[39m
+2025-02-06 09:54:01:541 [31merror[39m: [31mError searching products: column product.shopId does not exist[39m
+2025-02-06 10:23:04:234 [31merror[39m: [31mAuthentication error: jwt expired[39m

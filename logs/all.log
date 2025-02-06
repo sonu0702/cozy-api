@@ -469,3 +469,179 @@
 2025-02-02 22:51:39:5139 [32minfo[39m: [32mServer is running on port 8080[39m
 2025-02-02 22:54:48:5448 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
 2025-02-02 22:54:56:5456 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-02 23:29:22:2922 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-02 23:29:22:2922 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-05 21:51:32:5132 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-05 21:51:32:5132 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 07:38:29:3829 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 07:38:29:3829 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 07:53:39:5339 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 07:53:39:5339 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 07:55:00:550 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 07:55:00:550 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 07:55:03:553 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 07:55:03:553 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 07:58:12:5812 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 07:58:12:5812 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:02:58:258 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:02:58:258 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:09:53:953 [32minfo[39m: [32mUser logged in successfully: sonu[39m
+2025-02-06 08:10:44:1044 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 08:10:45:1045 [31merror[39m: [31mError searching billTo: cross-database references are not implemented: invoice.shop.owned_by.id[39m
+2025-02-06 08:15:30:1530 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:15:30:1530 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:15:45:1545 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:15:45:1545 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:15:55:1555 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 08:15:55:1555 [31merror[39m: [31mError searching billTo: column invoice.billto does not exist[39m
+2025-02-06 08:17:38:1738 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:17:38:1738 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:17:42:1742 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 08:17:42:1742 [31merror[39m: [31mError searching billTo: column invoice.billto does not exist[39m
+2025-02-06 08:17:43:1743 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 08:17:43:1743 [31merror[39m: [31mError searching billTo: column invoice.billto does not exist[39m
+2025-02-06 08:20:57:2057 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:20:57:2057 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:21:00:210 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:21:00:210 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:21:03:213 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:21:03:213 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:21:08:218 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 08:21:30:2130 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:21:30:2130 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:21:33:2133 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:21:33:2133 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:21:40:2140 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:21:40:2140 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:21:41:2141 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 08:25:45:2545 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:25:45:2545 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:25:47:2547 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:25:47:2547 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:26:07:267 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:26:07:267 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:26:16:2616 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:26:16:2616 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:26:22:2622 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:26:22:2622 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:26:55:2655 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:26:55:2655 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:27:02:272 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:27:02:272 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 08:27:18:2718 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 08:27:18:2718 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 09:06:27:627 [32minfo[39m: [32mUser logged in successfully: sonu[39m
+2025-02-06 09:06:27:627 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:06:35:635 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:06:38:638 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:06:38:638 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:06:48:648 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:06:59:659 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:07:05:75 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:07:12:712 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:11:54:1154 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:11:55:1155 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:12:08:128 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:12:11:1211 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:12:11:1211 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:17:39:1739 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:17:41:1741 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:17:43:1743 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:17:50:1750 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:18:24:1824 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:25:06:256 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:27:37:2737 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:27:56:2756 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 09:27:56:2756 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 09:43:03:433 [32minfo[39m: [32mUser logged in successfully: sonu[39m
+2025-02-06 09:43:27:4327 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:43:27:4327 [32minfo[39m: [32mBatch of 20 products created successfully[39m
+2025-02-06 09:44:50:4450 [31merror[39m: [31mAuthentication error: No authorization header[39m
+2025-02-06 09:45:01:451 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:45:09:459 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:45:15:4515 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:46:08:468 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 09:46:08:468 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 09:46:22:4622 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:46:23:4623 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:46:24:4624 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:46:25:4625 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:46:25:4625 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:46:25:4625 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:47:37:4737 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 09:47:37:4737 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 09:47:37:4737 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:48:01:481 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:49:14:4914 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 09:49:14:4914 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 09:52:58:5258 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:52:59:5259 [31merror[39m: [31mError searching products: column product.shopid does not exist[39m
+2025-02-06 09:53:17:5317 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 09:53:17:5317 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 09:53:50:5350 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 09:53:50:5350 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 09:53:58:5358 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 09:53:58:5358 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 09:54:00:540 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 09:54:01:541 [31merror[39m: [31mError searching products: column product.shopId does not exist[39m
+2025-02-06 09:54:59:5459 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 09:54:59:5459 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 09:55:03:553 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:05:21:521 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 10:05:21:521 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 10:06:16:616 [32minfo[39m: [32mDatabase connection initialized[39m
+2025-02-06 10:06:16:616 [32minfo[39m: [32mServer is running on port 8080[39m
+2025-02-06 10:10:01:101 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:23:04:234 [31merror[39m: [31mAuthentication error: jwt expired[39m
+2025-02-06 10:23:18:2318 [32minfo[39m: [32mUser logged in successfully: sonu[39m
+2025-02-06 10:23:18:2318 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:23:26:2326 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:23:28:2328 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:23:28:2328 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:23:34:2334 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:23:35:2335 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:23:35:2335 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:23:37:2337 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:25:05:255 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:25:06:256 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:25:07:257 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:25:40:2540 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:25:43:2543 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:25:43:2543 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:26:44:2644 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:26:47:2647 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:26:47:2647 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:26:50:2650 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:26:50:2650 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:26:50:2650 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:26:52:2652 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:30:56:3056 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:30:58:3058 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:30:59:3059 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:31:02:312 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:31:03:313 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:31:03:313 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:31:05:315 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:34:42:3442 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:34:58:3458 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:34:58:3458 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:01:351 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:01:351 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:01:351 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:02:352 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:31:3531 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:32:3532 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:32:3532 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:32:3532 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:53:3553 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:54:3554 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:54:3554 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:56:3556 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:57:3557 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:35:59:3559 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:36:08:368 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:36:10:3610 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:36:12:3612 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:36:19:3619 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m
+2025-02-06 10:36:19:3619 [32minfo[39m: [32mInvoice created successfully for shop: sonu's Shop[39m
+2025-02-06 10:36:19:3619 [32minfo[39m: [32mUser 2fa93ccc-9c85-4170-9a65-10dc2695d7f8 authenticated successfully[39m

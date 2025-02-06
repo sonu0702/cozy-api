@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { MinLength } from 'class-validator';
 import { User } from './User';
 import { Invoice } from './Invoice';
+import { Product } from './Product';
 
 @Entity('shops')
 export class Shop {
@@ -51,4 +52,7 @@ export class Shop {
 
     @OneToMany(() => Invoice, invoice => invoice.shop)
     invoices: Invoice[];
+
+    @OneToMany(() => Product, product => product.shop)
+    products: Product[];
 }
