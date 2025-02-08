@@ -32,6 +32,9 @@ export class Invoice {
     @Column()
     stateCode: string;
 
+    @Column({nullable:true})
+    shop_legal_name: string;
+
     @Column('jsonb')
     billTo: {
         name: string;

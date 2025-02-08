@@ -13,6 +13,12 @@ export class Shop {
     @MinLength(2)
     name: string;
 
+    @Column({nullable:true})
+    legal_name: string;
+
+    @Column({nullable:true})
+    digital_signature: string;
+
     @Column({ nullable: true })
     gstin: string;
 

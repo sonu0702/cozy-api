@@ -10,6 +10,7 @@ import { createErrorResponse, ApiError } from './interfaces/ApiResponse';
 import { ShopController } from './controllers/shop.controller';
 import { InvoiceController } from './controllers/invoice.controller';
 import { ProductController } from './controllers/product.controller';
+import { AnalyticsController } from './controllers/analytics.controller';
 
 config();
 
@@ -30,6 +31,7 @@ const userController = new UserController();
 const shopController = new ShopController();
 const invoiceController = new InvoiceController();
 const productController = new ProductController();
+const analyticsController = new AnalyticsController();
 
 // Routes
 app.post('/auth/register', userController.register);
@@ -67,6 +69,12 @@ app.get('/products/:id', authMiddleware, productController.getProduct);
 app.put('/products/:id', authMiddleware, productController.updateProduct);
 app.delete('/products/:id', authMiddleware, productController.deleteProduct);
 app.get('/shops/:shopId/products/search', authMiddleware, productController.searchProducts);
+
+// Analytics routes
+app.get('/shops/:shopId/analytics/today-sales', authMiddleware, analyticsController.getTodaySales);
+app.get('/shops/:shopId/analytics/yearly-sales', authMiddleware, analyticsController.getYearlySales);
+app.get('/shops/:shopId/analytics/product-count', authMiddleware, analyticsController.getProductCount);
+app.get('/shops/:shopId/analytics/net-income', authMiddleware, analyticsController.getNetIncome);
 
 // Initialize database connection
 AppDataSource.initialize()

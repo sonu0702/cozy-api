@@ -98,8 +98,8 @@ export const invoiceTemplate = `<!DOCTYPE html>
 <body>
     <div class="container">
         <div class="header">
-            <div class="company-name">PIVORA EXPERIENTIAL COMMUNICATIONS PVT LTD</div>
-            <div class="company-address">2313, 2nd Floor, Saptaghiri Padmini, 15th Main Road, 2nd Cross Hal 2nd Stage Bengaluru - 560008</div>
+            <div class="company-name">{{shop_legal_name}}</div>
+            <div class="company-address">{{address}}</div>
             <div class="invoice-title">TAX INVOICE</div>
         </div>
 
@@ -197,7 +197,7 @@ export const invoiceTemplate = `<!DOCTYPE html>
         </div>
 
         <div class="signature">
-            <div>For Pivora Experiential Communications Pvt Ltd</div>
+            <div>For {{shop_legal_name}}</div>
             <div style="margin-top: 30px;">Signature of the Licence or his authorised agent</div>
         </div>
     </div>
