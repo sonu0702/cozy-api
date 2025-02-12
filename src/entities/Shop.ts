@@ -61,4 +61,12 @@ export class Shop {
 
     @OneToMany(() => Product, product => product.shop)
     products: Product[];
+
+    @Column('jsonb', { nullable: true})
+    bank_detail: {
+        bank_name: string;
+        account_number: string;
+        IFSC_code: string;
+        account_holder_name: string;
+    };
 }

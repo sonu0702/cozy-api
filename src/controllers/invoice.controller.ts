@@ -153,6 +153,7 @@ export class InvoiceController {
             res.setHeader('Content-Disposition', `attachment; filename=invoice-${id}.pdf`);
             res.send(pdfBuffer);
         } catch (error) {
+            console.error('Error generating PDF:', error);
             const apiError = error instanceof ApiError ? error : new ApiError('Failed to generate PDF');
             res.status(400).json(createErrorResponse(apiError));
         }

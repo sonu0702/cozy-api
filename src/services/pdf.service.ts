@@ -2,6 +2,7 @@ import Handlebars from 'handlebars';
 import html_to_pdf from 'html-pdf-node';
 import { InvoiceService } from './invoice.service';
 import { ApiError } from '../interfaces/ApiResponse';
+import { logger } from '../utils/logger';
 
 export class PdfService {
     private invoiceService: InvoiceService;
@@ -18,6 +19,10 @@ export class PdfService {
         try {
             const invoice = await this.invoiceService.getInvoiceById(invoiceId, userId);
             
+            if (!invoice || !invoice.items) {
+                throw new ApiError('Invalid invoice data', 'INVALID_INVOICE_DATA');
+            }
+
             // Calculate totals
             let totalTaxableValue = 0;
             let totalCGST = 0;
@@ -38,25 +43,57 @@ export class PdfService {
                 totalCGST: totalCGST.toFixed(2),
                 totalSGST: totalSGST.toFixed(2),
                 totalIGST: totalIGST.toFixed(2),
-                totalInWords: this.numberToWords(Number(invoice.total))
+                totalInWords: this.numberToWords(Number(invoice.total || 0))
             };
 
-            // Generate HTML from template with data
-            const html = this.template(templateData);
+            try {
+                // Generate HTML from template with data
+                const html = this.template(templateData);
+                if (!html) {
+                    logger.error('Template rendering failed: Empty HTML output', { invoiceId, templateDataKeys: Object.keys(templateData) });
+                    throw new ApiError('Failed to generate PDF: Empty template output', 'PDF_GENERATION_ERROR');
+                }
 
-            // Convert to PDF
-            const options = {
-                format: 'A4',
-                margin: { top: 0, bottom: 0, left: 0, right: 0 },
-                printBackground: true
-            };
+                // Convert to PDF
+                const options = {
+                    format: 'A4',
+                    margin: { top: 0, bottom: 0, left: 0, right: 0 },
+                    printBackground: true,
+                    timeout: 30000 // 30 seconds timeout
+                };
 
-            const file = { content: html };
-            const buffer = await html_to_pdf.generatePdf(file, options);
-            return buffer;
-
+                const file = { content: html };
+                const buffer = await html_to_pdf.generatePdf(file, options);
+                if (!buffer || buffer.length === 0) {
+                    logger.error('PDF generation failed: Empty buffer', { invoiceId });
+                    throw new ApiError('Failed to generate PDF: Empty output', 'PDF_GENERATION_ERROR');
+                }
+                return buffer;
+            } catch (templateError) {
+                logger.error('Error in PDF generation process:', {
+                    error: templateError,
+                    errorMessage: templateError.message,
+                    errorStack: templateError.stack,
+                    invoiceId,
+                    templateDataKeys: Object.keys(templateData)
+                });
+                throw new ApiError(
+                    `Failed to generate PDF: ${templateError.message}`,
+                    'PDF_GENERATION_ERROR'
+                );
+            }
         } catch (error) {
-            throw new ApiError('Failed to generate PDF', 'PDF_GENERATION_ERROR');
+            logger.error('Error in PDF generation:', {
+                error,
+                errorMessage: error.message,
+                errorStack: error.stack,
+                invoiceId,
+                userId
+            });
+            if (error instanceof ApiError) {
+                throw error;
+            }
+            throw new ApiError('Failed to generate PDF: Internal server error', 'PDF_GENERATION_ERROR');
         }
     }
 

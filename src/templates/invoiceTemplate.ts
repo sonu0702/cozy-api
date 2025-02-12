@@ -4,10 +4,6 @@ export const invoiceTemplate = `<!DOCTYPE html>
     <meta charset="utf-8">
     <title>Invoice</title>
     <style>
-        @page {
-            size: A4;
-            margin: 0;
-        }
         body {
             margin: 0;
             padding: 40px;
@@ -15,13 +11,17 @@ export const invoiceTemplate = `<!DOCTYPE html>
             font-size: 12px;
             line-height: 1.4;
         }
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-        }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
         }
         .company-name {
             font-size: 18px;
@@ -81,16 +81,104 @@ export const invoiceTemplate = `<!DOCTYPE html>
             margin-top: 20px;
             text-align: right;
         }
+        .bank-details {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 20px;
+            border: 1px solid #000;
+            padding: 15px;
+        }
+        .qr-code {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+        }
+        .bank-info {
+            font-size: 12px;
+        }
+        .bank-info div {
+            margin-bottom: 5px;
+        }
         .declaration {
             margin-top: 30px;
+            margin-bottom: 20px;
         }
-        .signature {
+        .bank-signature-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            border: 1px solid #000;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .signature-section {
+            text-align: center;
+            border-left: 1px solid #000;
+            padding-left: 15px;
+        }
+        .signature-placeholder {
             margin-top: 50px;
-            text-align: right;
+            margin-bottom: 10px;
         }
+
+        @page {
+            margin: 20px;
+            size: A4;
+        }
+
+        #header {
+            position: running(header);
+        }
+
         @media print {
-            .page-break {
-                page-break-before: always;
+            body {
+                margin: 0;
+                padding: 20px;
+            }
+            .header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                margin: 0;
+                padding: 20px;
+            }
+            .container {
+                margin-top: 100px;
+            }
+            .grid-container {
+                page-break-inside: avoid;
+            }
+            .items-table {
+                page-break-inside: auto;
+            }
+            .items-table tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            .items-table thead {
+                display: table-header-group;
+            }
+            .items-table tfoot {
+                display: table-footer-group;
+            }
+            .bank-signature-box {
+                page-break-inside: avoid;
+                page-break-before: auto;
+                margin-top: 30px;
+            }
+            .bank-info {
+                page-break-inside: avoid;
+            }
+            .declaration {
+                page-break-inside: avoid;
+                page-break-before: avoid;
+                margin-bottom: 30px;
+            }
+            .totals {
+                page-break-inside: avoid;
             }
         }
     </style>
@@ -100,8 +188,8 @@ export const invoiceTemplate = `<!DOCTYPE html>
         <div class="header">
             <div class="company-name">{{shop_legal_name}}</div>
             <div class="company-address">{{address}}</div>
-            <div class="invoice-title">TAX INVOICE</div>
         </div>
+        <div class="invoice-title">TAX INVOICE</div>
 
         <div class="invoice-details">
             <div>GSTIN: {{gstin}}</div>
@@ -196,9 +284,20 @@ export const invoiceTemplate = `<!DOCTYPE html>
             <div>Certified that the particulars given above are true and correct and checked under my supervision.</div>
         </div>
 
-        <div class="signature">
-            <div>For {{shop_legal_name}}</div>
-            <div style="margin-top: 30px;">Signature of the Licence or his authorised agent</div>
+        <div class="bank-signature-box">
+            {{#if bank_detail}}
+            <div class="bank-info">
+                <div><strong>Bank Name:</strong> {{bank_detail.bank_name}}</div>
+                <div><strong>Account Number:</strong> {{bank_detail.account_number}}</div>
+                <div><strong>IFSC Code:</strong> {{bank_detail.IFSC_code}}</div>
+                <div><strong>Account Holder Name:</strong> {{bank_detail.account_holder_name}}</div>
+            </div>
+            {{/if}}
+            <div class="signature-section">
+                <div>For {{shop_legal_name}}</div>
+                <div class="signature-placeholder"></div>
+                <div>Authorised Signatory</div>
+            </div>
         </div>
     </div>
 </body>
