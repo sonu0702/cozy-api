@@ -84,6 +84,16 @@ export class ProductService {
             }
         });
 
+        if (productData.discount_percent !== undefined) {
+            const discount_percent = Number(productData.discount_percent);
+            if (isNaN(discount_percent) || discount_percent < 0) {
+                throw new ApiError('Invalid discount_percent value', 'VALIDATION_ERROR');
+            }
+            transformedData.discount_percent = Number(discount_percent.toFixed(2));
+        } else {
+            transformedData.discount_percent = 0;
+        }
+
         return transformedData;
     }
 
@@ -137,7 +147,8 @@ export class ProductService {
                 cgst: Number(product.cgst),
                 sgst: Number(product.sgst),
                 igst: Number(product.igst),
-                price: Number(product.price)
+                price: Number(product.price),
+                discount_percent: Number(product.discount_percent)
             }));
         } catch (error) {
             logger.error('Error fetching products:', error);
@@ -201,7 +212,8 @@ export class ProductService {
                 cgst: Number(product.cgst),
                 sgst: Number(product.sgst),
                 igst: Number(product.igst),
-                price: Number(product.price)
+                price: Number(product.price),
+                discount_percent: Number(product.discount_percent)
             }));
         } catch (error) {
             logger.error('Error searching products:', error);

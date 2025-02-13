@@ -90,6 +90,37 @@ export class InvoiceService {
     async updateInvoice(id: string, userId: string, invoiceData: Partial<Invoice>): Promise<Invoice> {
         return withTransaction(async (queryRunner) => {
             const invoice = await this.getInvoiceById(id, userId);
+            
+            // Handle invoice items if present
+            if (invoiceData.items) {
+                const items = invoiceData.items;
+                delete invoiceData.items; // Remove items from main invoice data
+                
+                // Update existing items and create new ones
+                const updatedItems = await Promise.all(items.map(async (item) => {
+                    if (item.id) {
+                        // Update existing item
+                        const existingItem = await queryRunner.manager.findOne(InvoiceItem, {
+                            where: { id: item.id, invoice: { id: invoice.id } },
+                            relations: ['invoice']
+                        });
+                        if (existingItem) {
+                            Object.assign(existingItem, item);
+                            return queryRunner.manager.save(existingItem);
+                        }
+                    }
+                    // Create new item with invoice association
+                    const newItem = queryRunner.manager.create(InvoiceItem, {
+                        ...item,
+                        invoice: invoice
+                    });
+                    return queryRunner.manager.save(newItem);
+                }));
+                
+                invoice.items = updatedItems;
+            }
+            
+            // Update main invoice data
             Object.assign(invoice, invoiceData);
             await queryRunner.manager.save(invoice);
             return invoice;
