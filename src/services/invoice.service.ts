@@ -46,18 +46,25 @@ export class InvoiceService {
         }, 'Error in invoice creation');
     }
 
-    async getInvoicesByShop(shopId: string, userId: string, page: number = 1, limit: number = 10): Promise<{ invoices: Invoice[], total: number }> {
+    async getInvoicesByShop(shopId: string, userId: string, page: number = 1, limit: number = 10, type?: string): Promise<{ invoices: Invoice[], total: number }> {
         try {
             const skip = (page - 1) * limit;
-            const [invoices, total] = await this.invoiceRepository.findAndCount({
-                where: { 
-                    shop: { id: shopId }
-                },
-                relations: ['items', 'shop', 'created_by'],
-                order: { created_at: 'DESC' },
-                take: limit,
-                skip: skip
-            });
+            const queryBuilder = this.invoiceRepository.createQueryBuilder('invoice')
+                .leftJoinAndSelect('invoice.items', 'items')
+                .leftJoinAndSelect('invoice.shop', 'shop')
+                .leftJoinAndSelect('invoice.created_by', 'created_by')
+                .where('shop.id = :shopId', { shopId });
+
+            if (type) {
+                queryBuilder.andWhere('invoice.type = :type', { type });
+            }
+
+            const [invoices, total] = await queryBuilder
+                .orderBy('invoice.created_at', 'DESC')
+                .take(limit)
+                .skip(skip)
+                .getManyAndCount();
+
             return { invoices, total };
         } catch (error) {
             logger.error('Error fetching invoices:', error);

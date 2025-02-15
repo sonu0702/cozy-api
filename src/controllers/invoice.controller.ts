@@ -29,7 +29,8 @@ export class InvoiceController {
             const { shopId } = req.params;
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 10;
-            const { invoices, total } = await this.invoiceService.getInvoicesByShop(shopId, req.user.id, page, limit);
+            const type = req.query.type as string;
+            const { invoices, total } = await this.invoiceService.getInvoicesByShop(shopId, req.user.id, page, limit, type);
             res.json(createSuccessResponse({
                 invoices,
                 pagination: {

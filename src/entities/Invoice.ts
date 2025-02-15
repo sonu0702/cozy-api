@@ -2,11 +2,19 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDat
 import { User } from './User';
 import { Shop } from './Shop';
 import { InvoiceItem } from './InvoiceItem';
+import { InvoiceType } from '../enums/InvoiceType';
 
 @Entity()
 export class Invoice {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @Column({
+        type: 'enum',
+        enum: InvoiceType,
+        default: InvoiceType.INVOICE
+    })
+    type: InvoiceType;
 
     @Column()
     gstin: string;
