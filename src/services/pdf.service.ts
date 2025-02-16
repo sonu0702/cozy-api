@@ -17,7 +17,7 @@ export class PdfService {
 
     async generateInvoicePdf(invoiceId: string, userId: string): Promise<Buffer> {
         try {
-            const invoice = await this.invoiceService.getInvoiceById(invoiceId, userId);
+            const invoice = await this.invoiceService.getInvoiceById(invoiceId);
             
             if (!invoice || !invoice.items) {
                 throw new ApiError('Invalid invoice data', 'INVALID_INVOICE_DATA');

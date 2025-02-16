@@ -4,6 +4,7 @@ import { Product } from '../entities/Product';
 import { AppDataSource } from '../config/database';
 import { logger } from '../utils/logger';
 import { ApiError } from '../interfaces/ApiResponse';
+import { InvoiceType } from '../enums/InvoiceType';
 
 export class AnalyticsService {
     private invoiceRepository: Repository<Invoice>;
@@ -24,6 +25,7 @@ export class AnalyticsService {
                 .select('SUM(invoice.total)', 'total')
                 .where('invoice.shop.id = :shopId', { shopId })
                 .andWhere('invoice.created_at >= :today', { today })
+                .andWhere('invoice.type = :type', { type: InvoiceType.INVOICE })
                 .getRawOne();
 
             return result?.total || 0;
@@ -42,6 +44,7 @@ export class AnalyticsService {
                 .select('SUM(invoice.total)', 'total')
                 .where('invoice.shop.id = :shopId', { shopId })
                 .andWhere('invoice.created_at >= :startOfYear', { startOfYear })
+                .andWhere('invoice.type = :type', { type: InvoiceType.INVOICE })
                 .getRawOne();
 
             return result?.total || 0;
@@ -62,18 +65,27 @@ export class AnalyticsService {
         }
     }
 
-    async getNetIncome(shopId: string): Promise<number> {
+    async getMonthSales(shopId: string, year?: number, month?: number): Promise<number> {
         try {
+            const targetYear = year || new Date().getFullYear();
+            const targetMonth = month || new Date().getMonth() + 1;
+
+            const startOfMonth = new Date(targetYear, targetMonth - 1, 1);
+            const endOfMonth = new Date(targetYear, targetMonth, 0, 23, 59, 59, 999);
+
             const result = await this.invoiceRepository
                 .createQueryBuilder('invoice')
                 .select('SUM(invoice.total)', 'total')
                 .where('invoice.shop.id = :shopId', { shopId })
+                .andWhere('invoice.created_at >= :startOfMonth', { startOfMonth })
+                .andWhere('invoice.created_at <= :endOfMonth', { endOfMonth })
+                .andWhere('invoice.type = :type', { type: InvoiceType.INVOICE })
                 .getRawOne();
 
             return result?.total || 0;
         } catch (error) {
-            logger.error('Error calculating net income:', error);
-            throw new ApiError('Failed to calculate net income', 'ANALYTICS_ERROR');
+            logger.error('Error calculating monthly sales:', error);
+            throw new ApiError('Failed to calculate monthly sales', 'ANALYTICS_ERROR');
         }
     }
 }

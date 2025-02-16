@@ -7,6 +7,7 @@ import { logger } from '../utils/logger';
 import { ApiError } from '../interfaces/ApiResponse';
 import { withTransaction } from '../utils/transaction';
 import { InvoiceItem } from '../entities/InvoiceItem';
+import { InvoiceType } from '../enums/InvoiceType';
 
 export class InvoiceService {
     private invoiceRepository: Repository<Invoice>;
@@ -72,12 +73,11 @@ export class InvoiceService {
         }
     }
 
-    async getInvoiceById(id: string, userId: string): Promise<Invoice> {
+    async getInvoiceById(id: string): Promise<Invoice> {
         try {
             const invoice = await this.invoiceRepository.findOne({
                 where: { 
-                    id,
-                    shop: { owned_by: { id: userId } }
+                    id
                 },
                 relations: ['items', 'shop', 'created_by']
             });
@@ -96,7 +96,7 @@ export class InvoiceService {
 
     async updateInvoice(id: string, userId: string, invoiceData: Partial<Invoice>): Promise<Invoice> {
         return withTransaction(async (queryRunner) => {
-            const invoice = await this.getInvoiceById(id, userId);
+            const invoice = await this.getInvoiceById(id);
             
             // Handle invoice items if present
             if (invoiceData.items) {
@@ -136,14 +136,14 @@ export class InvoiceService {
 
     async deleteInvoice(id: string, userId: string): Promise<void> {
         return withTransaction(async (queryRunner) => {
-            const invoice = await this.getInvoiceById(id, userId);
+            const invoice = await this.getInvoiceById(id);
             await queryRunner.manager.remove(invoice);
         }, 'Error deleting invoice');
     }
 
     async addInvoiceItem(invoiceId: string, itemData: Partial<InvoiceItem>, userId: string): Promise<InvoiceItem> {
         return withTransaction(async (queryRunner) => {
-            const invoice = await this.getInvoiceById(invoiceId, userId);
+            const invoice = await this.getInvoiceById(invoiceId);
             const item = queryRunner.manager.create(InvoiceItem, {
                 ...itemData,
                 invoice: invoice
@@ -215,5 +215,21 @@ export class InvoiceService {
             logger.error('Error searching shipTo:', error);
             throw new ApiError('Failed to search shipTo', 'SEARCH_ERROR');
         }
+    }
+
+    async convertToInvoice(id: string, userId: string): Promise<Invoice> {
+        return withTransaction(async (queryRunner) => {
+            const quotation = await this.getInvoiceById(id);
+            
+            if (quotation.type !== InvoiceType.QUOTATION) {
+                throw new ApiError('Only quotations can be converted to invoices', 'INVALID_OPERATION');
+            }
+
+            quotation.type = InvoiceType.INVOICE;
+            await queryRunner.manager.save(quotation);
+            
+            logger.info(`Quotation ${id} converted to invoice successfully`);
+            return quotation;
+        }, 'Error converting quotation to invoice');
     }
 }

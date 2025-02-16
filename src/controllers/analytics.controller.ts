@@ -32,6 +32,22 @@ export class AnalyticsController {
         }
     };
 
+    getMonthSales = async (req: AuthRequest, res: Response): Promise<void> => {
+        try {
+            const { shopId } = req.params;
+            const { year, month } = req.query;
+            const total = await this.analyticsService.getMonthSales(
+                shopId,
+                year ? parseInt(year as string) : undefined,
+                month ? parseInt(month as string) : undefined
+            );
+            res.json(createSuccessResponse({ total: total.toString() }, 'Monthly sales retrieved successfully'));
+        } catch (error) {
+            const apiError = error instanceof ApiError ? error : new ApiError('Failed to fetch monthly sales');
+            res.status(400).json(createErrorResponse(apiError));
+        }
+    };
+
     getProductCount = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             const { shopId } = req.params;
@@ -46,7 +62,7 @@ export class AnalyticsController {
     getNetIncome = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             const { shopId } = req.params;
-            const total = await this.analyticsService.getNetIncome(shopId);
+            const total = await this.analyticsService.getMonthSales(shopId);
             res.json(createSuccessResponse({ total: total.toString() }, 'Net income retrieved successfully'));
         } catch (error) {
             const apiError = error instanceof ApiError ? error : new ApiError('Failed to fetch net income');

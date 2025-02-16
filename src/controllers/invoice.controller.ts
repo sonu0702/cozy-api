@@ -48,7 +48,7 @@ export class InvoiceController {
 
     getInvoice = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
-            const invoice = await this.invoiceService.getInvoiceById(req.params.id, req.user.id);
+            const invoice = await this.invoiceService.getInvoiceById(req.params.id);
             res.json(createSuccessResponse(invoice, 'Invoice retrieved successfully'));
         } catch (error) {
             const apiError = error instanceof ApiError ? error : new ApiError('Failed to fetch invoice');
@@ -157,6 +157,18 @@ export class InvoiceController {
             console.error('Error generating PDF:', error);
             const apiError = error instanceof ApiError ? error : new ApiError('Failed to generate PDF');
             res.status(400).json(createErrorResponse(apiError));
+        }
+    };
+
+    convertToInvoice = async (req: AuthRequest, res: Response): Promise<void> => {
+        try {
+            const { id } = req.params;
+            const invoice = await this.invoiceService.convertToInvoice(id, req.user.id);
+            res.json(createSuccessResponse(invoice, 'Quotation converted to invoice successfully'));
+        } catch (error) {
+            const apiError = error instanceof ApiError ? error : new ApiError('Failed to convert quotation to invoice');
+            res.status(error instanceof ApiError && error.code === 'INVOICE_NOT_FOUND' ? 404 : 400)
+                .json(createErrorResponse(apiError));
         }
     };
 }

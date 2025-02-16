@@ -55,6 +55,7 @@ app.delete('/invoices/:id', authMiddleware, invoiceController.deleteInvoice);
 app.get('/invoices/:id/pdf', authMiddleware, invoiceController.generatePdf);
 app.get('/invoices/search/bill-to/:shop_id', authMiddleware, invoiceController.searchBillTo);
 app.get('/invoices/search/ship-to/:shop_id', authMiddleware, invoiceController.searchShipTo);
+app.put('/invoices/:id/convert', authMiddleware, invoiceController.convertToInvoice);
 
 // Invoice item routes
 app.post('/invoices/:invoiceId/items', authMiddleware, invoiceController.addInvoiceItem);
@@ -74,7 +75,7 @@ app.get('/shops/:shopId/products/search', authMiddleware, productController.sear
 app.get('/shops/:shopId/analytics/today-sales', authMiddleware, analyticsController.getTodaySales);
 app.get('/shops/:shopId/analytics/yearly-sales', authMiddleware, analyticsController.getYearlySales);
 app.get('/shops/:shopId/analytics/product-count', authMiddleware, analyticsController.getProductCount);
-app.get('/shops/:shopId/analytics/net-income', authMiddleware, analyticsController.getNetIncome);
+app.get('/shops/:shopId/analytics/monthly-sales', authMiddleware, analyticsController.getMonthSales);
 
 // Initialize database connection
 AppDataSource.initialize()
