@@ -189,7 +189,7 @@ export const invoiceTemplate = `<!DOCTYPE html>
             <div class="company-name">{{shop_legal_name}}</div>
             <div class="company-address">{{address}}</div>
         </div>
-        <div class="invoice-title">TAX INVOICE</div>
+        <div class="invoice-title">{{#if (eq type 'QUOTATION')}}QUOTATION{{else if (eq type 'PURCHASE')}}PURCHASE INVOICE{{else}}TAX INVOICE{{/if}}</div>
 
         <div class="invoice-details">
             <div>GSTIN: {{gstin}}</div>

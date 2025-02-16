@@ -11,6 +11,10 @@ export class PdfService {
     constructor() {
         this.invoiceService = new InvoiceService();
         const { invoiceTemplate } = require('../templates/invoiceTemplate');
+        // Register the 'eq' helper for conditional comparison
+        Handlebars.registerHelper('eq', function (v1, v2) {
+            return v1 === v2;
+        });
         // Initialize Handlebars template
         this.template = Handlebars.compile(invoiceTemplate.toString());
     }
