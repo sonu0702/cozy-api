@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, OneToMany } from 'typeorm';
 import { IsEmail, MinLength } from 'class-validator';
 import * as bcrypt from 'bcrypt';
-import { Shop } from './Shop';
 import { Invoice } from './Invoice';
+import { UserShop } from './UserShop';
 
 @Entity('users')
 export class User {
@@ -26,12 +26,16 @@ export class User {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @OneToMany(() => Shop, shop => shop.owned_by)
-    shops: Shop[];
+    @OneToMany(() => UserShop, userShop => userShop.user)
+    userShops: UserShop[];
 
     @OneToMany(() => Invoice, invoice => invoice.created_by)
     created_invoices: Invoice[];
 
+    @Column('jsonb', { nullable: true})
+    additional_data: {
+        default_shop_id: string;
+    };
 
     @BeforeInsert()
     async hashPassword() {

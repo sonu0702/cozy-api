@@ -2,27 +2,31 @@ import { Request, Response } from 'express';
 import { ShopService } from '../services/shop.service';
 import { createSuccessResponse, createErrorResponse, ApiError } from '../interfaces/ApiResponse';
 import { AuthRequest } from '../middleware/auth.middleware';
+import { UserService } from '../services/user.service';
+import { UserShopService } from '../services/userShop.service';
+import { UserRole } from '../entities/UserShop';
 
 export class ShopController {
     private shopService: ShopService;
+    private userService: UserService;
+    private userShopService: UserShopService;
 
     constructor() {
         this.shopService = new ShopService();
+        this.userService = new UserService();
+        this.userShopService = new UserShopService();
     }
 
     createShop = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             const shopData = req.body;
             const shop = await this.shopService.createShop(shopData, req.user);
+            const user = await this.userService.updateUserDefaultShop(req.user.id, shop.id);
+            await this.userShopService.createUserShop(req.user, shop, UserRole.OWNER);
             const resData = {
                 id: shop.id,
                 name: shop.name,
-                is_default: shop.is_default,
-                owned_by: {
-                    id: shop.owned_by.id,
-                    email: shop.owned_by.email,
-                    username: shop.owned_by.username
-                }
+                is_default: user.additional_data.default_shop_id === shop.id
             };
             res.status(201).json(createSuccessResponse(resData, 'Shop created successfully'));
         } catch (error) {
@@ -33,16 +37,13 @@ export class ShopController {
 
     getShops = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
-            const shops = await this.shopService.getShopsByUser(req.user.id);
-            const shopsData = shops.map(shop => ({
-                id: shop.id,
-                name: shop.name,
-                is_default: shop.is_default,
-                owned_by: {
-                    id: shop.owned_by.id,
-                    email: shop.owned_by.email,
-                    username: shop.owned_by.username
-                }
+
+            const shops = await this.userShopService.getUserShops(req.user.id);
+            const shopsData = shops.map(usershop => ({
+                id: usershop.shop.id,
+                name: usershop.shop.name,
+                is_default: req.user.additional_data.default_shop_id === usershop.shop.id,
+                role: usershop.role
             }));
             res.json(createSuccessResponse(shopsData, 'Shops retrieved successfully'));
         } catch (error) {
@@ -55,12 +56,7 @@ export class ShopController {
         try {
             const shop = await this.shopService.getShopById(req.params.id);
             const shopData = {
-                ...shop,
-                owned_by: {
-                    id: shop.owned_by.id,
-                    email: shop.owned_by.email,
-                    username: shop.owned_by.username
-                }
+                ...shop
             }
             res.json(createSuccessResponse(shopData, 'Shop retrieved successfully'));
         } catch (error) {
@@ -75,13 +71,7 @@ export class ShopController {
             const shop = await this.shopService.updateShop(req.params.id, req.body);
             const shopData = {
                 id: shop.id,
-                name: shop.name,
-                is_default: shop.is_default,
-                owned_by: {
-                    id: shop.owned_by.id,
-                    email: shop.owned_by.email,
-                    username: shop.owned_by.username
-                }
+                name: shop.name
             };
             res.json(createSuccessResponse(shopData, 'Shop updated successfully'));
         } catch (error) {
@@ -107,13 +97,7 @@ export class ShopController {
             const shop = await this.shopService.setDefaultShop(req.params.id, req.user.id);
             const shopData = {
                 id: shop.id,
-                name: shop.name,
-                is_default: shop.is_default,
-                owned_by: {
-                    id: shop.owned_by.id,
-                    email: shop.owned_by.email,
-                    username: shop.owned_by.username
-                }
+                name: shop.name
             };
             res.json(createSuccessResponse(shopData, 'Shop set as default successfully'));
         } catch (error) {

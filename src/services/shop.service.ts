@@ -5,22 +5,40 @@ import { AppDataSource } from '../config/database';
 import { logger } from '../utils/logger';
 import { ApiError } from '../interfaces/ApiResponse';
 import { withTransaction } from '../utils/transaction';
+import { UserShop } from '../entities/UserShop';
+import { UserService } from './user.service';
+import { UserShopService } from './userShop.service';
+import { UserRole } from '../entities/UserShop';
 
 export class ShopService {
     private shopRepository: Repository<Shop>;
+    private userServerice: UserService;
+    private userShopServerice: UserShopService;
 
     constructor() {
         this.shopRepository = AppDataSource.getRepository(Shop);
+        this.userServerice = new UserService();
+        this.userShopServerice = new UserShopService();
     }
 
     async createShop(shopData: Partial<Shop>, user: User): Promise<Shop> {
         return withTransaction(async (queryRunner) => {
             const shop = this.shopRepository.create({
                 ...shopData,
-                owned_by: user
             });
 
             await queryRunner.manager.save(shop);
+
+            // Create UserShop association with OWNER role
+            const userShop = queryRunner.manager.create(UserShop, {
+                user_id: user.id,
+                shop_id: shop.id,
+                user: user,
+                shop: shop,
+                role: UserRole.OWNER
+            });
+            await queryRunner.manager.save(userShop);
+
             logger.info(`Shop created successfully: ${shop.name}`);
             return shop;
         }, 'Error in shop creation');
@@ -28,10 +46,14 @@ export class ShopService {
 
     async getShopsByUser(userId: string): Promise<Shop[]> {
         try {
-            return await this.shopRepository.find({
-                where: { owned_by: { id: userId } },
-                relations: ['owned_by']
+            const userShops = await this.userShopServerice.getUserShops(userId);
+            let listShopWithRole =  userShops.map(userShop => {
+                return {
+                ...userShop.shop,
+                role: userShop.role
+               }
             });
+            return listShopWithRole;
         } catch (error) {
             logger.error('Error fetching shops:', error);
             throw new ApiError('Failed to fetch shops', 'SHOP_FETCH_ERROR');
@@ -41,8 +63,7 @@ export class ShopService {
     async getShopById(id: string): Promise<Shop> {
         try {
             const shop = await this.shopRepository.findOne({
-                where: { id },
-                relations: ['owned_by']
+                where: { id }
             });
 
             if (!shop) {
@@ -74,43 +95,39 @@ export class ShopService {
     }
 
     async setDefaultShop(id: string, userId: string): Promise<Shop> {
-        return withTransaction(async (queryRunner) => {
-            await queryRunner.manager
-                .createQueryBuilder()
-                .update(Shop)
-                .set({ is_default: false })
-                .where("owned_by_id = :userId", { userId })
-                .execute();
-
-            const shop = await this.getShopById(id);
-            if (shop.owned_by.id !== userId) {
-                throw new ApiError('Unauthorized access to shop', 'SHOP_ACCESS_DENIED');
-            }
-
-            shop.is_default = true;
-            await queryRunner.manager.save(shop);
-            logger.info(`Shop set as default: ${shop.name}`);
-            return shop;
-        }, 'Error setting default shop');
+        let usershop = await this.userShopServerice.getUserShop(userId,id);
+        if(!usershop) {
+            throw new ApiError('Failed to update default shop', 'SHOP_UPDATE_ERROR');
+        }
+        await this.userServerice.updateUserDefaultShop(userId, id);
+        return usershop.shop;
     }
 
     async createDefaultShop(user: User): Promise<Shop> {
-        try {
+        return withTransaction(async (queryRunner) => {
             const defaultShop = this.shopRepository.create({
                 name: `${user.username}'s Shop`,
                 address: 'Default Address',
                 state: 'Default State',
                 pin: '000000',
-                owned_by: user,
-                is_default: true
             });
 
-            await this.shopRepository.save(defaultShop);
+            await queryRunner.manager.save(defaultShop);
+
+            // Create UserShop association with OWNER role
+            const userShop = queryRunner.manager.create(UserShop, {
+                user_id: user.id,
+                shop_id: defaultShop.id,
+                user: user,
+                shop: defaultShop,
+                role: UserRole.OWNER
+            });
+            await queryRunner.manager.save(userShop);
+
             logger.info(`Default shop created for user: ${user.username}`);
+            //make thip shop default shop
+            await this.userServerice.updateUserDefaultShop(user.id, defaultShop.id);
             return defaultShop;
-        } catch (error) {
-            logger.error('Error creating default shop:', error);
-            throw new ApiError('Failed to create default shop', 'SHOP_CREATE_ERROR');
-        }
+        }, 'Error creating default shop');
     }
 }

@@ -5,6 +5,7 @@ import { AppDataSource } from '../config/database';
 import { logger } from '../utils/logger';
 import { ShopService } from './shop.service';
 import { Shop } from '../entities/Shop';
+import { UserRole, UserShop } from '../entities/UserShop';
 
 export class UserService {
     private userRepository: Repository<User>;
@@ -24,7 +25,7 @@ export class UserService {
 
             await this.userRepository.save(user);
             logger.info(`User created successfully: ${username}`);
-
+            
             // Create default shop after user creation
             try {
                 const shopService = new ShopService();
@@ -45,8 +46,7 @@ export class UserService {
     async login(username: string, password: string): Promise<{ user: User; token: string; default_shop: Shop | null }> {
         try {
             const user = await this.userRepository.findOne({
-                where: { username },
-                relations: ['shops']
+                where: { username }
             });
 
             if (!user) {
@@ -65,14 +65,16 @@ export class UserService {
             });
 
             // Find default shop
-            const shopRepository = AppDataSource.getRepository(Shop);
-            const defaultShop = await shopRepository.findOne({
-                where: { owned_by: { id: user.id }, is_default: true },
-                relations: ['owned_by']
-            });
-
+            const userShopRepository = AppDataSource.getRepository(UserShop);
+            let defaultShop: UserShop | null = null;
+            if(user.additional_data?.default_shop_id) {
+                defaultShop = await userShopRepository.findOne({
+                    where: { user_id: user.id, shop_id: user.additional_data?.default_shop_id },
+                    relations: ['user','shop']
+                });
+            }
             logger.info(`User logged in successfully: ${username}`);
-            return { user, token, default_shop: defaultShop }
+            return { user, token, default_shop: defaultShop?.shop || null }
         } catch (error) {
             logger.error('Error in user login:', error);
             throw error;
@@ -82,8 +84,7 @@ export class UserService {
     async findById(id: string): Promise<User> {
         try {
             const user = await this.userRepository.findOne({
-                where: { id },
-                relations: ['shops']
+                where: { id }
             });
             if (!user) {
                 throw new Error('User not found');
@@ -91,6 +92,26 @@ export class UserService {
             return user;
         } catch (error) {
             logger.error('Error finding user by id:', error);
+            throw error;
+        }
+    }
+
+    async updateUserDefaultShop(userId: string, shopId: string): Promise<User> {
+        try {
+            const user = await this.userRepository.findOne({
+                where: { id: userId }
+            });
+            if (!user) {
+                throw new Error('User not found');
+            }
+            user.additional_data = {
+                ...user.additional_data,
+                default_shop_id: shopId
+            };
+            await this.userRepository.save(user);
+            return user;
+        } catch (error) {
+            logger.error('Error updating user default shop:', error);
             throw error;
         }
     }

@@ -18,7 +18,7 @@ export class InvoiceService {
 
     async createInvoice(invoiceData: Partial<Invoice>, items: Partial<InvoiceItem>[], user: User, shopId: string): Promise<Invoice> {
         return withTransaction(async (queryRunner) => {
-            const shop = await queryRunner.manager.findOne(Shop, { where: { id: shopId, owned_by: { id: user.id } } });
+            const shop = await queryRunner.manager.findOne(Shop, { where: { id: shopId } });
             if (!shop) {
                 throw new ApiError('Shop not found or unauthorized', 'SHOP_NOT_FOUND');
             }
@@ -156,8 +156,8 @@ export class InvoiceService {
     async updateInvoiceItem(id: string, itemData: Partial<InvoiceItem>, userId: string): Promise<InvoiceItem> {
         return withTransaction(async (queryRunner) => {
             const item = await queryRunner.manager.findOne(InvoiceItem, {
-                where: { id, invoice: { shop: { owned_by: { id: userId } } } },
-                relations: ['invoice', 'invoice.shop', 'invoice.shop.owned_by']
+                where: { id },
+                relations: ['invoice', 'invoice.shop']
             });
 
             if (!item) {
@@ -173,7 +173,7 @@ export class InvoiceService {
     async deleteInvoiceItem(id: string, userId: string): Promise<void> {
         return withTransaction(async (queryRunner) => {
             const item = await queryRunner.manager.findOne(InvoiceItem, {
-                where: { id, invoice: { shop: { owned_by: { id: userId } } } },
+                where: { id },
                 relations: ['invoice', 'invoice.shop', 'invoice.shop.owned_by']
             });
 

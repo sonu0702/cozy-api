@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { UserService } from '../services/user.service';
 import { logger } from '../utils/logger';
 import { createSuccessResponse, createErrorResponse, ApiError } from '../interfaces/ApiResponse';
+import { AppDataSource } from '../config/database';
+import { UserShop } from '../entities/UserShop';
 
 export class UserController {
     private userService: UserService;
@@ -60,20 +62,19 @@ export class UserController {
         try {
             const userId = (req as any).user.id;
             const user = await this.userService.findById(userId);
-            
+            const userShopRepository = AppDataSource.getRepository(UserShop);
+            let userShops = await userShopRepository.find({
+                where: { user_id: user.id },
+                relations: ['user','shop']
+            });
             const userProfile = {
                 id: user.id,
                 email: user.email,
                 username: user.username,
-                shops: user.shops.map(shop => ({
-                    id: shop.id,
-                    name: shop.name,
-                    is_default: shop.is_default,
-                    owned_by: {
-                        id: shop.owned_by.id,
-                        email: shop.owned_by.email,
-                        username: shop.owned_by.username
-                    }
+                shops: userShops.map(userShop => ({
+                    id: userShop.shop.id,
+                    name: userShop.shop.name,
+                    is_default: user.additional_data?.default_shop_id === userShop.shop.id
                 }))
             };
             res.status(200).json(createSuccessResponse(userProfile));

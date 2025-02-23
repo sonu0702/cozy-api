@@ -134,22 +134,27 @@ export class ProductService {
         }
     }
 
-    async getProducts(shopId: string): Promise<Product[]> {
+    async getProducts(shopId: string, page: number = 1, limit: number = 10): Promise<{ products: Product[], total: number }> {
         try {
-            const products = await this.productRepository.find({
+            const [products, total] = await this.productRepository.findAndCount({
                 where: { shop: { id: shopId } },
-                relations: ['shop']
+                relations: ['shop'],
+                skip: (page - 1) * limit,
+                take: limit
             });
 
             // Transform numeric fields
-            return products.map(product => ({
-                ...product,
-                cgst: Number(product.cgst),
-                sgst: Number(product.sgst),
-                igst: Number(product.igst),
-                price: Number(product.price),
-                discount_percent: Number(product.discount_percent)
-            }));
+            return {
+                products: products.map(product => ({
+                    ...product,
+                    cgst: Number(product.cgst),
+                    sgst: Number(product.sgst),
+                    igst: Number(product.igst),
+                    price: Number(product.price),
+                    discount_percent: Number(product.discount_percent)
+                })),
+                total
+            };
         } catch (error) {
             logger.error('Error fetching products:', error);
             throw error;
@@ -203,7 +208,12 @@ export class ProductService {
             const products = await this.productRepository
                 .createQueryBuilder('product')
                 .where(`product.shop_id = :shopId`, { shopId })
-                .andWhere('LOWER(product.name) LIKE LOWER(:query)', { query: `%${query}%` })
+                .andWhere(
+                    '(LOWER(product.name) LIKE LOWER(:query) OR '
+                    + 'LOWER(product.hsn) LIKE LOWER(:query) OR '
+                    + 'LOWER(product.category) LIKE LOWER(:query))',
+                    { query: `%${query}%` }
+                )
                 .getMany();
 
             // Transform numeric fields

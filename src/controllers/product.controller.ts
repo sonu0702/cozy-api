@@ -41,8 +41,18 @@ export class ProductController {
     getProducts = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             const { shopId } = req.params;
-            const products = await this.productService.getProducts(shopId);
-            res.json(createSuccessResponse(products, 'Products retrieved successfully'));
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 10;
+            const { products, total } = await this.productService.getProducts(shopId, page, limit);
+            res.json(createSuccessResponse({
+                products,
+                pagination: {
+                    total,
+                    page,
+                    limit,
+                    total_pages: Math.ceil(total / limit)
+                }
+            }, 'Products retrieved successfully'));
         } catch (error) {
             const apiError = error instanceof ApiError ? error : new ApiError('Failed to fetch products');
             res.status(400).json(createErrorResponse(apiError));

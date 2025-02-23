@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { MinLength } from 'class-validator';
 import { User } from './User';
 import { Invoice } from './Invoice';
 import { Product } from './Product';
+import { UserShop } from './UserShop';
 
 @Entity('shops')
 export class Shop {
@@ -43,9 +44,8 @@ export class Shop {
     @MinLength(6)
     pin: string;
 
-    @ManyToOne(() => User, user => user.shops)
-    @JoinColumn({ name: 'owned_by_id' })
-    owned_by: User;
+    @OneToMany(() => UserShop, userShop => userShop.shop)
+    userShops: UserShop[];
 
     @CreateDateColumn()
     createdAt: Date;
@@ -53,8 +53,6 @@ export class Shop {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @Column({ default: false })
-    is_default: boolean;
 
     @OneToMany(() => Invoice, invoice => invoice.shop)
     invoices: Invoice[];
