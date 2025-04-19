@@ -15,7 +15,8 @@ export class InvoiceController {
 
     createInvoice = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
-            const { shopId, items, ...invoiceData } = req.body;
+            const { items, ...invoiceData } = req.body;
+            const { shopId } = req.params;
             const invoice = await this.invoiceService.createInvoice(invoiceData, items, req.user, shopId);
             res.status(201).json(createSuccessResponse(invoice, 'Invoice created successfully'));
         } catch (error) {
@@ -107,7 +108,7 @@ export class InvoiceController {
     searchBillTo = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             const { name } = req.query;
-            const {shop_id} = req.params;
+            const { shop_id } = req.params;
             if (!name || typeof name !== 'string') {
                 throw new ApiError('Name parameter is required', 'INVALID_PARAMETER');
             }
@@ -122,7 +123,7 @@ export class InvoiceController {
     searchShipTo = async (req: AuthRequest, res: Response): Promise<void> => {
         try {
             const { name } = req.query;
-            const {shop_id} = req.params;
+            const { shop_id } = req.params;
             if (!name || typeof name !== 'string') {
                 throw new ApiError('Name parameter is required', 'INVALID_PARAMETER');
             }
@@ -131,7 +132,7 @@ export class InvoiceController {
         } catch (error) {
             const apiError = error instanceof ApiError ? error : new ApiError('Failed to search shipTo');
             res.status(400).json(createErrorResponse(apiError));
-        }            
+        }
     };
 
     deleteInvoice = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -149,7 +150,7 @@ export class InvoiceController {
         try {
             const { id } = req.params;
             const pdfBuffer = await this.pdfService.generateInvoicePdf(id, req.user.id);
-            
+
             res.setHeader('Content-Type', 'application/pdf');
             res.setHeader('Content-Disposition', `attachment; filename=invoice-${id}.pdf`);
             res.send(pdfBuffer);
